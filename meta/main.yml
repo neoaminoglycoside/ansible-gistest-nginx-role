@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Vladimir O. Filatov
+  description: Ansible role for Git In Sky Nginx Role.
+  license: BSD
+  min_ansible_version: 2.7
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - system
+    - networking
+dependencies: []
