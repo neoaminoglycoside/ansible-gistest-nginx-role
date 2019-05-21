@@ -1,4 +1,8 @@
 ---
 
 install_nginx: true
-install_and_configure_misc: true
+nginx_packages:
+  - nginx
+nginx_packages_state: "present"
+nginx_configs_path: "/etc/nginx/sites-available"
+
