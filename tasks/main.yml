@@ -1,1 +1,31 @@
 ---
+
+- name: Install packages
+  package:
+    pkg: "{{ item }}"
+    state: "{{ nginx_packages_state }}"
+  with_items: "{{ nginx_packages }}"
+  tags: nginx
+
+- name: Install nginx vhost config
+  template:
+    src: vhost.j2
+    dest: "{{ nginx_configs_path }}/{{ www_virtualhost_example }}"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+    validate: bash -c 'nginx -t -c /dev/stdin <<< "events {worker_connections 1;} http { include %s; }"' 
+  notify: restart nginx
+  tags: nginx
+
+- name: Check 200OK Code For New Vhost
+  uri:
+    url: http://127.0.0.1/
+    method: GET
+    return_content: yes
+    status_code: 200
+    headers:
+      Host: "{{ www_virtualhost_example }}.{{ www_virtualhost_domainname }}"
+  register: my_debug
+
