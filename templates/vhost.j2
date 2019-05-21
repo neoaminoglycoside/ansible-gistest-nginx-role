@@ -1,0 +1,23 @@
+
+server {
+    {% block server_begin %}{% endblock %}
+    {% block server_basic -%}
+ 
+    listen {{ nginx_port | default('80') }};
+
+{% if www_virtualhost_example is defined %}
+{% if www_virtualhost_domainname is defined %}
+    server_name {{ www_virtualhost_example }}.{{ www_virtualhost_domainname }};
+{% else %}
+server_name {{ www_virtualhost_example }};
+{% endif %}
+    root /var/www/{{ www_virtualhost_example }};
+{% endif %}
+
+    index index.html index.htm;
+    error_log /var/log/nginx/{{ www_virtualhost_example | default('')}}.error.log;
+    access_log /var/log/nginx/{{ www_virtualhost_example | default('')}}.access.log;
+}
+    {% endblock %}
+    {% block server_end %}{% endblock %}
+
