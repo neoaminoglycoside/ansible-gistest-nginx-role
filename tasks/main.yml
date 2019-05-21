@@ -16,8 +16,14 @@
     mode: 0644
     force: yes
     validate: bash -c 'nginx -t -c /dev/stdin <<< "events {worker_connections 1;} http { include %s; }"' 
-  notify: restart nginx
   tags: nginx
+
+- name: Create symbolic link 
+  file:
+    src: "{{ nginx_configs_path }}/{{ www_virtualhost_example }}"
+    dest: "/etc/nginx/sites-enabled"
+    state: link
+  notify: restart nginx
 
 - name: Check 200OK Code For New Vhost
   uri:
