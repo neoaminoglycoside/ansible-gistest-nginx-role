@@ -1,10 +1,9 @@
 ---
 
 - name: Install packages
-  package:
-    pkg: "{{ item }}"
+  apt:
+    name: "{{ nginx_packages }}"
     state: "{{ nginx_packages_state }}"
-  with_items: "{{ nginx_packages }}"
   tags: nginx
 
 - name: Install nginx vhost config
@@ -21,8 +20,9 @@
 - name: Create symbolic link 
   file:
     src: "{{ nginx_configs_path }}/{{ www_virtualhost_example }}"
-    dest: "/etc/nginx/sites-enabled"
+    dest: "/etc/nginx/sites-enabled/{{ www_virtualhost_example }}"
     state: link
+    force: yes
   notify: restart nginx
 
 - name: Check 200OK Code For New Vhost
